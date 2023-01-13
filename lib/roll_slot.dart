@@ -153,6 +153,7 @@ class _RollSlotState extends State<RollSlot> {
 
     for (var i = 0; i < _controllers.length; i++) {
       random = randomIndex();
+
       listOfFutures.add(_controllers[i].animateTo(
         random * widget.itemExtend,
         curve: Curves.elasticInOut,
@@ -194,7 +195,7 @@ class _RollSlotState extends State<RollSlot> {
   int randomIndex() {
     int randomInt;
 
-    randomInt = Random().nextInt(widget.children.length);
+    randomInt = Random().nextInt(widget.children.length * 10);
     return randomInt == currentIndex ? randomIndex() : randomInt;
   }
 }

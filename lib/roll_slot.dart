@@ -165,12 +165,13 @@ class _RollSlotState extends State<RollSlot> {
     late int random;
     for (var i = 0; i < _controllers.length; i++) {
       random = randomIndex();
-      await _controllers[i].animateTo(
+      _controllers[i].animateTo(
         random * widget.itemExtend,
         curve: Curves.elasticInOut,
         duration: widget.duration * (1 / widget.speed),
       );
     }
+
     // _controllers.forEach((element) async {
     //   random = randomIndex();
 

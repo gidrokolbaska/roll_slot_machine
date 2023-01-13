@@ -57,7 +57,7 @@ class RollSlot extends StatefulWidget {
 
 class _RollSlotState extends State<RollSlot> {
   List<FixedExtentScrollController> _controllers = [];
-  List<Widget> currentList = [];
+
   int currentIndex = 0;
 
   @override
@@ -141,24 +141,6 @@ class _RollSlotState extends State<RollSlot> {
     });
   }
 
-  void shuffleAndFillTheList() {
-    if (widget.children.isNotEmpty) {
-      double d = (widget.duration.inMilliseconds / 100);
-      if (widget.additionalListToEndAndStart) {
-        addToCurrentList();
-      }
-      while (currentList.length < d) {
-        addToCurrentList();
-      }
-      if (widget.additionalListToEndAndStart) {
-        addToCurrentList();
-        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-          jump();
-        });
-      }
-    }
-  }
-
   /// Gets the [randomIndex] an animate the [RollSlot] to that item
   Future<void> animateToRandomly() async {
     // await _controllers[0].animateTo(
@@ -197,20 +179,6 @@ class _RollSlotState extends State<RollSlot> {
     if (widget.rollSlotController != null) {
       widget.rollSlotController!.currentIndex = random % widget.children.length;
     }
-  }
-
-  /// When [additionalListToEndAndStart] is true,
-  /// This method adds the [widget.children] to beginning and end of the list
-  ///
-  /// for being able to show items if the random number hits edge cases
-  void addToCurrentList() {
-    setState(() {
-      if (widget.shuffleList) {
-        currentList.addAll(widget.children.toList()..shuffle());
-      } else {
-        currentList.addAll(widget.children.toList());
-      }
-    });
   }
 
   /// Helping to jump the first item that can be random.

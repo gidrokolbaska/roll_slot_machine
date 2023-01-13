@@ -24,7 +24,7 @@ class RollSlot extends StatefulWidget {
 
   final double squeeze;
 
-  SelectedItemCallback? onItemSelected;
+  final SelectedItemCallback? onItemSelected;
 
   final bool shuffleList;
 
@@ -74,19 +74,57 @@ class _RollSlotState extends State<RollSlot> {
 
   @override
   Widget build(BuildContext context) {
-    return ListWheelScrollView(
-      physics: BouncingScrollPhysics(),
-      itemExtent: widget.itemExtend,
-      diameterRatio: widget.diameterRation,
-      controller: _controller,
-      squeeze: widget.squeeze,
-      perspective: widget.perspective,
-      children: currentList.map((_widget) {
-        return Padding(
-          padding: widget.itemPadding,
-          child: _widget,
-        );
-      }).toList(),
+    return Row(
+      children: [
+        Flexible(
+          child: ListWheelScrollView(
+            physics: BouncingScrollPhysics(),
+            itemExtent: widget.itemExtend,
+            diameterRatio: widget.diameterRation,
+            controller: _controller,
+            squeeze: widget.squeeze,
+            perspective: widget.perspective,
+            children: currentList.map((_widget) {
+              return Padding(
+                padding: widget.itemPadding,
+                child: _widget,
+              );
+            }).toList(),
+          ),
+        ),
+        Flexible(
+          child: ListWheelScrollView(
+            physics: BouncingScrollPhysics(),
+            itemExtent: widget.itemExtend,
+            diameterRatio: widget.diameterRation,
+            controller: _controller,
+            squeeze: widget.squeeze,
+            perspective: widget.perspective,
+            children: currentList.map((_widget) {
+              return Padding(
+                padding: widget.itemPadding,
+                child: _widget,
+              );
+            }).toList(),
+          ),
+        ),
+        Flexible(
+          child: ListWheelScrollView(
+            physics: BouncingScrollPhysics(),
+            itemExtent: widget.itemExtend,
+            diameterRatio: widget.diameterRation,
+            controller: _controller,
+            squeeze: widget.squeeze,
+            perspective: widget.perspective,
+            children: currentList.map((_widget) {
+              return Padding(
+                padding: widget.itemPadding,
+                child: _widget,
+              );
+            }).toList(),
+          ),
+        ),
+      ],
     );
   }
 

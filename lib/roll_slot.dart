@@ -224,11 +224,8 @@ class _RollSlotState extends State<RollSlot> {
   /// Returns a random number.
   int randomIndex() {
     int randomInt;
-    if (widget.additionalListToEndAndStart)
-      randomInt = widget.children.length +
-          Random().nextInt(currentList.length - widget.children.length);
-    else
-      randomInt = Random().nextInt(currentList.length);
+
+    randomInt = Random().nextInt(widget.children.length * 10);
     return randomInt == currentIndex ? randomIndex() : randomInt;
   }
 }

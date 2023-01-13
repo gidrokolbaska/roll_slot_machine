@@ -166,7 +166,8 @@ class _RollSlotState extends State<RollSlot> {
       //   duration: widget.duration * (1 / widget.speed),
       // );
     }
-    await Future.wait(listOfFutures);
+    var test = await Future.wait(listOfFutures);
+    print(test.toString());
 
     // _controllers.forEach((element) async {
     //   random = randomIndex();

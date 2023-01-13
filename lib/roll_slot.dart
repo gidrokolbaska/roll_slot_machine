@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:roll_slot_machine/roll_slot_controller.dart';
 
 typedef void SelectedItemCallback({
-  @required int currentIndex,
-  @required Widget currentWidget,
+  required int currentIndex,
+  required Widget currentWidget,
 });
 
 class RollSlot extends StatefulWidget {
-  final RollSlotController rollSlotController;
+  late final RollSlotController? rollSlotController;
 
   final List<Widget> children;
   final Duration duration;
@@ -24,7 +24,7 @@ class RollSlot extends StatefulWidget {
 
   final double squeeze;
 
-  final SelectedItemCallback onItemSelected;
+  SelectedItemCallback? onItemSelected;
 
   final bool shuffleList;
 
@@ -32,10 +32,10 @@ class RollSlot extends StatefulWidget {
 
   final EdgeInsets itemPadding;
 
-  const RollSlot({
-    Key key,
-    @required this.itemExtend,
-    @required this.children,
+  RollSlot({
+    Key? key,
+    required this.itemExtend,
+    required this.children,
     this.rollSlotController,
     this.duration = const Duration(milliseconds: 3600),
     this.curve = Curves.elasticOut,
@@ -92,8 +92,8 @@ class _RollSlotState extends State<RollSlot> {
 
   void addRollSlotControllerListener() {
     if (widget.rollSlotController != null) {
-      widget.rollSlotController.addListener(() {
-        if (widget.rollSlotController.state ==
+      widget.rollSlotController!.addListener(() {
+        if (widget.rollSlotController!.state ==
             RollSlotControllerState.animateRandomly) {
           animateToRandomly();
         }
@@ -109,7 +109,7 @@ class _RollSlotState extends State<RollSlot> {
         final Widget currentWidget = currentList.elementAt(currentIndex);
         print('index : $currentIndex');
         if (widget.onItemSelected != null) {
-          widget.onItemSelected(
+          widget.onItemSelected!(
             currentIndex: currentIndex,
             currentWidget: currentWidget,
           );
@@ -119,7 +119,7 @@ class _RollSlotState extends State<RollSlot> {
   }
 
   void shuffleAndFillTheList() {
-    if (widget.children != null && widget.children.isNotEmpty) {
+    if (widget.children.isNotEmpty) {
       double d = (widget.duration.inMilliseconds / 100);
       if (widget.additionalListToEndAndStart) {
         addToCurrentList();
@@ -145,7 +145,7 @@ class _RollSlotState extends State<RollSlot> {
       duration: widget.duration * (1 / widget.speed),
     );
     if (widget.rollSlotController != null) {
-      widget.rollSlotController.currentIndex = random % widget.children.length;
+      widget.rollSlotController!.currentIndex = random % widget.children.length;
     }
   }
 

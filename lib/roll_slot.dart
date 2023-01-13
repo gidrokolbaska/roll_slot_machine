@@ -123,7 +123,8 @@ class _RollSlotState extends State<RollSlot> {
     }
   }
 
-  void addListenerScrollController(ScrollController scrollController) {
+  void addListenerScrollController(
+      FixedExtentScrollController scrollController) {
     scrollController.addListener(() {
       final currentScrollPixels = scrollController.position.pixels;
       if (currentScrollPixels % widget.itemExtend == 0) {

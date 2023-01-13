@@ -156,7 +156,7 @@ class _RollSlotState extends State<RollSlot> {
   }
 
   /// Gets the [randomIndex] an animate the [RollSlot] to that item
-  Future<void> animateToRandomly() async {
+  animateToRandomly() {
     // await _controllers[0].animateTo(
     //   random * widget.itemExtend,
     //   curve: Curves.elasticInOut,

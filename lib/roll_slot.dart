@@ -156,22 +156,30 @@ class _RollSlotState extends State<RollSlot> {
   }
 
   /// Gets the [randomIndex] an animate the [RollSlot] to that item
-  animateToRandomly() {
+  Future<void> animateToRandomly() async {
     // await _controllers[0].animateTo(
     //   random * widget.itemExtend,
     //   curve: Curves.elasticInOut,
     //   duration: widget.duration * (1 / widget.speed),
     // );
     late int random;
-    _controllers.forEach((element) async {
+    for (var i = 0; i < _controllers.length; i++) {
       random = randomIndex();
-
-      await element.animateTo(
+      await _controllers[i].animateTo(
         random * widget.itemExtend,
         curve: Curves.elasticInOut,
         duration: widget.duration * (1 / widget.speed),
       );
-    });
+    }
+    // _controllers.forEach((element) async {
+    //   random = randomIndex();
+
+    //   await element.animateTo(
+    //     random * widget.itemExtend,
+    //     curve: Curves.elasticInOut,
+    //     duration: widget.duration * (1 / widget.speed),
+    //   );
+    // });
 
     if (widget.rollSlotController != null) {
       widget.rollSlotController!.currentIndex = random % widget.children.length;

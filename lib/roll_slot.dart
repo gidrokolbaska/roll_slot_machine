@@ -129,7 +129,7 @@ class _RollSlotState extends State<RollSlot> {
       final currentScrollPixels = scrollController.position.pixels;
       if (currentScrollPixels % widget.itemExtend == 0) {
         currentIndex = currentScrollPixels ~/ widget.itemExtend;
-        final Widget currentWidget = currentList.elementAt(currentIndex);
+        final Widget currentWidget = widget.children.elementAt(currentIndex);
         print('index : $currentIndex');
         if (widget.onItemSelected != null) {
           widget.onItemSelected!(

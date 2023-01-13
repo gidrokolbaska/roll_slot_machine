@@ -12,6 +12,7 @@ class RollSlot extends StatefulWidget {
   late final RollSlotController? rollSlotController;
 
   final List<Widget> children;
+  final int numberOfRows;
   final Duration duration;
   final Curve curve;
   final double speed;
@@ -36,6 +37,7 @@ class RollSlot extends StatefulWidget {
     Key? key,
     required this.itemExtend,
     required this.children,
+    this.numberOfRows = 1,
     this.rollSlotController,
     this.duration = const Duration(milliseconds: 3600),
     this.curve = Curves.elasticOut,
@@ -54,7 +56,7 @@ class RollSlot extends StatefulWidget {
 }
 
 class _RollSlotState extends State<RollSlot> {
-  ScrollController _controller = ScrollController();
+  List<ScrollController> _controllers = [];
   List<Widget> currentList = [];
   int currentIndex = 0;
 
@@ -62,69 +64,48 @@ class _RollSlotState extends State<RollSlot> {
   void initState() {
     shuffleAndFillTheList();
     addRollSlotControllerListener();
-    addListenerScrollController();
+    for (var i = 0; i < widget.numberOfRows; i++) {
+      _controllers.add(ScrollController());
+      addListenerScrollController(_controllers[i]);
+    }
+
     super.initState();
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controllers.forEach((element) {
+      element.dispose();
+    });
+    _controllers.clear();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: [
-        Flexible(
-          child: ListWheelScrollView(
-            physics: BouncingScrollPhysics(),
-            itemExtent: widget.itemExtend,
-            diameterRatio: widget.diameterRation,
-            controller: _controller,
-            squeeze: widget.squeeze,
-            perspective: widget.perspective,
-            children: currentList.map((_widget) {
-              return Padding(
-                padding: widget.itemPadding,
-                child: _widget,
-              );
-            }).toList(),
-          ),
-        ),
-        Flexible(
-          child: ListWheelScrollView(
-            physics: BouncingScrollPhysics(),
-            itemExtent: widget.itemExtend,
-            diameterRatio: widget.diameterRation,
-            controller: _controller,
-            squeeze: widget.squeeze,
-            perspective: widget.perspective,
-            children: currentList.map((_widget) {
-              return Padding(
-                padding: widget.itemPadding,
-                child: _widget,
-              );
-            }).toList(),
-          ),
-        ),
-        Flexible(
-          child: ListWheelScrollView(
-            physics: BouncingScrollPhysics(),
-            itemExtent: widget.itemExtend,
-            diameterRatio: widget.diameterRation,
-            controller: _controller,
-            squeeze: widget.squeeze,
-            perspective: widget.perspective,
-            children: currentList.map((_widget) {
-              return Padding(
-                padding: widget.itemPadding,
-                child: _widget,
-              );
-            }).toList(),
-          ),
-        ),
-      ],
+      children: _controllers
+          .map(
+            (scrollController) => Flexible(
+              child: ListWheelScrollView(
+                physics: BouncingScrollPhysics(),
+                itemExtent: widget.itemExtend,
+                diameterRatio: widget.diameterRation,
+                controller: scrollController,
+                squeeze: widget.squeeze,
+                perspective: widget.perspective,
+                children: currentList.map(
+                  (_widget) {
+                    return Padding(
+                      padding: widget.itemPadding,
+                      child: _widget,
+                    );
+                  },
+                ).toList(),
+              ),
+            ),
+          )
+          .toList(),
     );
   }
 
@@ -139,9 +120,9 @@ class _RollSlotState extends State<RollSlot> {
     }
   }
 
-  void addListenerScrollController() {
-    _controller.addListener(() {
-      final currentScrollPixels = _controller.position.pixels;
+  void addListenerScrollController(ScrollController scrollController) {
+    scrollController.addListener(() {
+      final currentScrollPixels = scrollController.position.pixels;
       if (currentScrollPixels % widget.itemExtend == 0) {
         currentIndex = currentScrollPixels ~/ widget.itemExtend;
         final Widget currentWidget = currentList.elementAt(currentIndex);
@@ -177,11 +158,14 @@ class _RollSlotState extends State<RollSlot> {
   /// Gets the [randomIndex] an animate the [RollSlot] to that item
   Future<void> animateToRandomly() async {
     int random = randomIndex();
-    await _controller.animateTo(
-      random * widget.itemExtend,
-      curve: Curves.elasticInOut,
-      duration: widget.duration * (1 / widget.speed),
-    );
+    _controllers.forEach((element) async {
+      await element.animateTo(
+        random * widget.itemExtend,
+        curve: Curves.elasticInOut,
+        duration: widget.duration * (1 / widget.speed),
+      );
+    });
+
     if (widget.rollSlotController != null) {
       widget.rollSlotController!.currentIndex = random % widget.children.length;
     }
@@ -205,7 +189,9 @@ class _RollSlotState extends State<RollSlot> {
   ///
   /// It is using only when the [additionalListToEndAndStart] is true.
   void jump() {
-    _controller.jumpTo(widget.itemExtend * widget.children.length);
+    _controllers.forEach((element) {
+      element.jumpTo(widget.itemExtend * widget.children.length);
+    });
   }
 
   /// Returns a random number.

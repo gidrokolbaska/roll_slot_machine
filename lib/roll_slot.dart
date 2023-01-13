@@ -62,7 +62,7 @@ class _RollSlotState extends State<RollSlot> {
 
   @override
   void initState() {
-    shuffleAndFillTheList();
+    //shuffleAndFillTheList();
     addRollSlotControllerListener();
     for (var i = 0; i < widget.numberOfRows; i++) {
       _controllers.add(ScrollController());
@@ -87,7 +87,7 @@ class _RollSlotState extends State<RollSlot> {
       children: _controllers
           .map(
             (scrollController) => Flexible(
-              child: ListWheelScrollView(
+              child: ListWheelScrollView.useDelegate(
                 physics: const NeverScrollableScrollPhysics(
                     parent: BouncingScrollPhysics()),
                 itemExtent: widget.itemExtend,
@@ -95,14 +95,16 @@ class _RollSlotState extends State<RollSlot> {
                 controller: scrollController,
                 squeeze: widget.squeeze,
                 perspective: widget.perspective,
-                children: currentList.map(
-                  (_widget) {
-                    return Padding(
-                      padding: widget.itemPadding,
-                      child: _widget,
-                    );
-                  },
-                ).toList(),
+                childDelegate: ListWheelChildLoopingListDelegate(
+                  children: currentList.map(
+                    (_widget) {
+                      return Padding(
+                        padding: widget.itemPadding,
+                        child: _widget,
+                      );
+                    },
+                  ).toList(),
+                ),
               ),
             ),
           )

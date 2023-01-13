@@ -88,8 +88,7 @@ class _RollSlotState extends State<RollSlot> {
           .map(
             (scrollController) => Flexible(
               child: ListWheelScrollView.useDelegate(
-                physics: const NeverScrollableScrollPhysics(
-                    parent: BouncingScrollPhysics()),
+                physics: FixedExtentScrollPhysics(),
                 itemExtent: widget.itemExtend,
                 diameterRatio: widget.diameterRation,
                 controller: scrollController,

@@ -163,14 +163,22 @@ class _RollSlotState extends State<RollSlot> {
     //   duration: widget.duration * (1 / widget.speed),
     // );
     late int random;
+    List<Future> listOfFutures = [];
+
     for (var i = 0; i < _controllers.length; i++) {
       random = randomIndex();
-      _controllers[i].animateTo(
+      listOfFutures.add(_controllers[i].animateTo(
         random * widget.itemExtend,
         curve: Curves.elasticInOut,
         duration: widget.duration * (1 / widget.speed),
-      );
+      ));
+      // await _controllers[i].animateTo(
+      //   random * widget.itemExtend,
+      //   curve: Curves.elasticInOut,
+      //   duration: widget.duration * (1 / widget.speed),
+      // );
     }
+    await Future.wait(listOfFutures);
 
     // _controllers.forEach((element) async {
     //   random = randomIndex();

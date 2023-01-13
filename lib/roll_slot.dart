@@ -56,7 +56,7 @@ class RollSlot extends StatefulWidget {
 }
 
 class _RollSlotState extends State<RollSlot> {
-  List<ScrollController> _controllers = [];
+  List<FixedExtentScrollController> _controllers = [];
   List<Widget> currentList = [];
   int currentIndex = 0;
 
@@ -65,7 +65,7 @@ class _RollSlotState extends State<RollSlot> {
     //shuffleAndFillTheList();
     addRollSlotControllerListener();
     for (var i = 0; i < widget.numberOfRows; i++) {
-      _controllers.add(ScrollController());
+      _controllers.add(FixedExtentScrollController());
       addListenerScrollController(_controllers[i]);
     }
 

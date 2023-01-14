@@ -54,6 +54,7 @@ class _RollSlotState extends State<RollSlot> {
 
   int currentIndex = 0;
   final List<int> results = [];
+  bool canRoll = true;
   @override
   void initState() {
     addRollSlotControllerListener();
@@ -81,12 +82,6 @@ class _RollSlotState extends State<RollSlot> {
           .map(
             (scrollController) => Flexible(
               child: ListWheelScrollView.useDelegate(
-                onSelectedItemChanged: (value) {
-                  if (widget.rollSlotController!.state ==
-                      RollSlotControllerState.stopped) {
-                    results.add(value);
-                  }
-                },
                 physics: FixedExtentScrollPhysics(
                     parent: NeverScrollableScrollPhysics()),
                 itemExtent: widget.itemExtend,
@@ -130,33 +125,38 @@ class _RollSlotState extends State<RollSlot> {
         currentIndex =
             (currentScrollPixels ~/ widget.itemExtend) % widget.children.length;
 
-        // results.add(currentIndex);
-        // print(results.length);
+        results.add(currentIndex);
+        print(results.length);
       }
     });
   }
 
   /// Gets the [randomIndex] an animate the [RollSlot] to that item
   Future<void> animateToRandomly() async {
-    results.clear();
-    // results.length = 0;
+    if (canRoll) {
+      canRoll = false;
+      results.clear();
+      results.length = 0;
 
-    late int random;
-    List<Future> listOfFutures = [];
+      late int random;
+      List<Future> listOfFutures = [];
 
-    for (var i = 0; i < _controllers.length; i++) {
-      random = randomIndex();
+      for (var i = 0; i < _controllers.length; i++) {
+        random = randomIndex();
 
-      listOfFutures.add(_controllers[i].animateTo(
-        random * widget.itemExtend,
-        curve: Curves.elasticInOut,
-        duration: widget.duration * (1 / widget.speed),
-      ));
-    }
-    await Future.wait(listOfFutures);
-    if (widget.onSelected != null) {
-      widget.onSelected!(results);
-    }
+        listOfFutures.add(_controllers[i].animateTo(
+          random * widget.itemExtend,
+          curve: Curves.elasticInOut,
+          duration: widget.duration * (1 / widget.speed),
+        ));
+      }
+      await Future.wait(listOfFutures);
+      if (widget.onSelected != null) {
+        widget.onSelected!(results);
+      }
+      canRoll = true;
+    } else
+      return null;
   }
 
   /// Returns a random number.

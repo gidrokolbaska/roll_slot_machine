@@ -53,7 +53,7 @@ class _RollSlotState extends State<RollSlot> {
   List<FixedExtentScrollController> _controllers = [];
 
   int currentIndex = 0;
-  late final List<int> currentIndexes;
+  final List<int> currentIndexes = [];
   final List<int> results = [];
   bool canRoll = true;
   @override

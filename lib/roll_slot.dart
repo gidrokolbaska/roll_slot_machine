@@ -115,9 +115,9 @@ class _RollSlotState extends State<RollSlot> {
                     currentIndexes[_controllers.indexOf(scrollController)] =
                         value;
                     upperIndexes[_controllers.indexOf(scrollController)] =
-                        value - 1;
+                        (value % widget.children.length) - 1;
                     belowIndexes[_controllers.indexOf(scrollController)] =
-                        value + 1;
+                        (value % widget.children.length) + 1;
                   },
                   physics: FixedExtentScrollPhysics(
                       parent: NeverScrollableScrollPhysics()),

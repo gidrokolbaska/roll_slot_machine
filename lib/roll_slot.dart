@@ -84,20 +84,20 @@ class _RollSlotState extends State<RollSlot> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: _controllers
-          .map(
-            (scrollController) => Flexible(
-              child: NotificationListener<ScrollEndNotification>(
-                onNotification: (notification) {
-                  print('current values: $currentIndexes');
-                  if (widget.onSelected != null) {
-                    widget.onSelected!(currentIndexes);
-                    return true;
-                  } else {
-                    return false;
-                  }
-                },
+    return NotificationListener<ScrollEndNotification>(
+      onNotification: (notification) {
+        print('current values: $currentIndexes');
+        if (widget.onSelected != null) {
+          widget.onSelected!(currentIndexes);
+          return true;
+        } else {
+          return false;
+        }
+      },
+      child: Row(
+        children: _controllers
+            .map(
+              (scrollController) => Flexible(
                 child: ListWheelScrollView.useDelegate(
                   onSelectedItemChanged: (value) {
                     currentIndexes[_controllers.indexOf(scrollController)] =
@@ -122,9 +122,9 @@ class _RollSlotState extends State<RollSlot> {
                   ),
                 ),
               ),
-            ),
-          )
-          .toList(),
+            )
+            .toList(),
+      ),
     );
   }
 

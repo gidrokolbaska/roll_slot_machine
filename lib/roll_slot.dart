@@ -86,7 +86,6 @@ class _RollSlotState extends State<RollSlot> {
   Widget build(BuildContext context) {
     return NotificationListener<ScrollEndNotification>(
       onNotification: (notification) {
-        print('current values: $currentIndexes');
         if (widget.onSelected != null && isAlreadyFetched == false) {
           widget.onSelected!(currentIndexes);
           isAlreadyFetched = true;

@@ -133,6 +133,7 @@ class _RollSlotState extends State<RollSlot> {
   /// Gets the [randomIndex] an animate the [RollSlot] to that item
   Future<void> animateToRandomly() async {
     results.clear();
+    results.length = 0;
 
     late int random;
     List<Future> listOfFutures = [];

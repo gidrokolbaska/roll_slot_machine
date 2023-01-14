@@ -130,11 +130,8 @@ class _RollSlotState extends State<RollSlot> {
       if (currentScrollPixels % widget.itemExtend == 0) {
         currentIndex =
             (currentScrollPixels ~/ widget.itemExtend) % widget.children.length;
-        final Widget currentWidget = widget.children.elementAt(currentIndex);
+        // final Widget currentWidget = widget.children.elementAt(currentIndex);
         results.add(currentIndex);
-        if (widget.onSelected != null) {
-          widget.onSelected!(results);
-        }
 
         // if (widget.onItemSelected != null) {
         //   widget.onItemSelected!(
@@ -163,7 +160,10 @@ class _RollSlotState extends State<RollSlot> {
       ));
     }
     await Future.wait(listOfFutures);
-
+    if (widget.onSelected != null) {
+      widget.onSelected!(results);
+    }
+    ;
     // if (widget.rollSlotController != null) {
     //   widget.rollSlotController!.currentIndex = random % widget.children.length;
     // }

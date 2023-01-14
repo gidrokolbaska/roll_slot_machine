@@ -19,10 +19,11 @@ class RollSlot extends StatefulWidget {
   final double perspective;
 
   final double squeeze;
+
   final Function(
-      {List<int> upperResults,
-      List<int> currentResults,
-      List<int> belowResults})? onSelected;
+      {List<int>? upperResults,
+      List<int>? currentResults,
+      List<int>? belowResults})? onSelected;
 
   final bool shuffleList;
 

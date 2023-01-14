@@ -54,7 +54,7 @@ class _RollSlotState extends State<RollSlot> {
 
   int currentIndex = 0;
   final List<int> currentIndexes = [];
-  final List<int> results = [];
+
   bool canRoll = true;
   @override
   void initState() {
@@ -68,7 +68,6 @@ class _RollSlotState extends State<RollSlot> {
         ),
       );
       currentIndexes.add(0);
-      addListenerScrollController(_controllers[i]);
     }
 
     super.initState();
@@ -92,6 +91,9 @@ class _RollSlotState extends State<RollSlot> {
               child: NotificationListener<ScrollEndNotification>(
                 onNotification: (notification) {
                   print('current values: $currentIndexes');
+                  if (widget.onSelected != null) {
+                    widget.onSelected!(currentIndexes);
+                  }
                   return true;
                 },
                 child: ListWheelScrollView.useDelegate(
@@ -135,25 +137,10 @@ class _RollSlotState extends State<RollSlot> {
     }
   }
 
-  void addListenerScrollController(
-      FixedExtentScrollController scrollController) {
-    scrollController.addListener(() {
-      final currentScrollPixels = scrollController.position.pixels;
-      if (currentScrollPixels % widget.itemExtend == 0) {
-        currentIndex =
-            (currentScrollPixels ~/ widget.itemExtend) % widget.children.length;
-
-        results.add(currentIndex);
-        print(results.length);
-      }
-    });
-  }
-
   /// Gets the [randomIndex] an animate the [RollSlot] to that item
   Future<void> animateToRandomly() async {
     if (canRoll) {
       canRoll = false;
-      results.clear();
 
       late int random;
       List<Future> listOfFutures = [];
@@ -168,9 +155,7 @@ class _RollSlotState extends State<RollSlot> {
         ));
       }
       await Future.wait(listOfFutures);
-      if (widget.onSelected != null) {
-        widget.onSelected!(results);
-      }
+
       canRoll = true;
     } else
       return null;

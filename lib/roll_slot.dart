@@ -93,8 +93,10 @@ class _RollSlotState extends State<RollSlot> {
                   print('current values: $currentIndexes');
                   if (widget.onSelected != null) {
                     widget.onSelected!(currentIndexes);
+                    return true;
+                  } else {
+                    return false;
                   }
-                  return true;
                 },
                 child: ListWheelScrollView.useDelegate(
                   onSelectedItemChanged: (value) {

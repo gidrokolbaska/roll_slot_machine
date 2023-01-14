@@ -59,7 +59,13 @@ class _RollSlotState extends State<RollSlot> {
   void initState() {
     addRollSlotControllerListener();
     for (var i = 0; i < widget.numberOfRows; i++) {
-      _controllers.add(FixedExtentScrollController());
+      _controllers.add(
+        FixedExtentScrollController(
+          initialItem: Random().nextInt(
+            widget.children.length,
+          ),
+        ),
+      );
       addListenerScrollController(_controllers[i]);
     }
 
@@ -136,8 +142,7 @@ class _RollSlotState extends State<RollSlot> {
     if (canRoll) {
       canRoll = false;
       results.clear();
-      results.length = 0;
-      print(results.toString());
+
       late int random;
       List<Future> listOfFutures = [];
 

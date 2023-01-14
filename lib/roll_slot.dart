@@ -3,10 +3,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:roll_slot_machine/roll_slot_controller.dart';
 
-typedef void SelectedItemCallback({
-  required int currentIndex,
-  required Widget currentWidget,
-});
+// typedef void SelectedItemCallback({
+//   List<int> results,
+// });
 
 class RollSlot extends StatefulWidget {
   late final RollSlotController? rollSlotController;
@@ -24,8 +23,8 @@ class RollSlot extends StatefulWidget {
   final double perspective;
 
   final double squeeze;
-
-  final SelectedItemCallback? onItemSelected;
+  final Function(List<int>)? onSelected;
+  // final SelectedItemCallback? onItemSelected;
 
   final bool shuffleList;
 
@@ -45,8 +44,9 @@ class RollSlot extends StatefulWidget {
     this.diameterRation = 1,
     this.perspective = 0.002,
     this.squeeze = 1.4,
-    this.onItemSelected,
+    // this.onItemSelected,
     this.shuffleList = true,
+    this.onSelected,
     this.additionalListToEndAndStart = true,
     this.itemPadding = const EdgeInsets.all(8.0),
   }) : super(key: key);
@@ -132,12 +132,16 @@ class _RollSlotState extends State<RollSlot> {
             (currentScrollPixels ~/ widget.itemExtend) % widget.children.length;
         final Widget currentWidget = widget.children.elementAt(currentIndex);
         results.add(currentIndex);
-        if (widget.onItemSelected != null) {
-          widget.onItemSelected!(
-            currentIndex: currentIndex,
-            currentWidget: currentWidget,
-          );
+        if (widget.onSelected != null) {
+          widget.onSelected!(results);
         }
+
+        // if (widget.onItemSelected != null) {
+        //   widget.onItemSelected!(
+        //     currentIndex: currentIndex,
+        //     currentWidget: currentWidget,
+        //   );
+        // }
       }
     });
   }

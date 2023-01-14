@@ -53,6 +53,7 @@ class _RollSlotState extends State<RollSlot> {
   List<FixedExtentScrollController> _controllers = [];
 
   int currentIndex = 0;
+  late final List<int> currentIndexes;
   final List<int> results = [];
   bool canRoll = true;
   @override
@@ -66,6 +67,7 @@ class _RollSlotState extends State<RollSlot> {
           ),
         ),
       );
+      currentIndexes.add(0);
       addListenerScrollController(_controllers[i]);
     }
 
@@ -87,23 +89,33 @@ class _RollSlotState extends State<RollSlot> {
       children: _controllers
           .map(
             (scrollController) => Flexible(
-              child: ListWheelScrollView.useDelegate(
-                physics: FixedExtentScrollPhysics(
-                    parent: NeverScrollableScrollPhysics()),
-                itemExtent: widget.itemExtend,
-                diameterRatio: widget.diameterRation,
-                controller: scrollController,
-                squeeze: widget.squeeze,
-                perspective: widget.perspective,
-                childDelegate: ListWheelChildLoopingListDelegate(
-                  children: widget.children.map(
-                    (_widget) {
-                      return Padding(
-                        padding: widget.itemPadding,
-                        child: _widget,
-                      );
-                    },
-                  ).toList(),
+              child: NotificationListener<ScrollEndNotification>(
+                onNotification: (notification) {
+                  print('current values: $currentIndexes');
+                  return true;
+                },
+                child: ListWheelScrollView.useDelegate(
+                  onSelectedItemChanged: (value) {
+                    currentIndexes[_controllers.indexOf(scrollController)] =
+                        value;
+                  },
+                  physics: FixedExtentScrollPhysics(
+                      parent: NeverScrollableScrollPhysics()),
+                  itemExtent: widget.itemExtend,
+                  diameterRatio: widget.diameterRation,
+                  controller: scrollController,
+                  squeeze: widget.squeeze,
+                  perspective: widget.perspective,
+                  childDelegate: ListWheelChildLoopingListDelegate(
+                    children: widget.children.map(
+                      (_widget) {
+                        return Padding(
+                          padding: widget.itemPadding,
+                          child: _widget,
+                        );
+                      },
+                    ).toList(),
+                  ),
                 ),
               ),
             ),

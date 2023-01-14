@@ -19,7 +19,10 @@ class RollSlot extends StatefulWidget {
   final double perspective;
 
   final double squeeze;
-  final Function(List<int>)? onSelected;
+  final Function(
+      {required List<int> upperResults,
+      required List<int> currentResults,
+      required List<int> belowResults})? onSelected;
 
   final bool shuffleList;
 
@@ -53,6 +56,8 @@ class _RollSlotState extends State<RollSlot> {
   List<FixedExtentScrollController> _controllers = [];
 
   final List<int> currentIndexes = [];
+  final List<int> belowIndexes = [];
+  final List<int> upperIndexes = [];
   bool isAlreadyFetched = false;
 
   bool canRoll = true;
@@ -68,6 +73,8 @@ class _RollSlotState extends State<RollSlot> {
         ),
       );
       currentIndexes.add(0);
+      upperIndexes.add(0);
+      belowIndexes.add(0);
     }
 
     super.initState();
@@ -87,7 +94,11 @@ class _RollSlotState extends State<RollSlot> {
     return NotificationListener<ScrollEndNotification>(
       onNotification: (notification) {
         if (widget.onSelected != null && isAlreadyFetched == false) {
-          widget.onSelected!(currentIndexes);
+          widget.onSelected!(
+            currentResults: currentIndexes,
+            belowResults: belowIndexes,
+            upperResults: upperIndexes,
+          );
           isAlreadyFetched = true;
           return true;
         } else {
@@ -102,6 +113,10 @@ class _RollSlotState extends State<RollSlot> {
                   onSelectedItemChanged: (value) {
                     currentIndexes[_controllers.indexOf(scrollController)] =
                         value;
+                    upperIndexes[_controllers.indexOf(scrollController)] =
+                        value - 1;
+                    belowIndexes[_controllers.indexOf(scrollController)] =
+                        value + 1;
                   },
                   physics: FixedExtentScrollPhysics(
                       parent: NeverScrollableScrollPhysics()),

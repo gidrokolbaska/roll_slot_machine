@@ -59,7 +59,7 @@ class _RollSlotState extends State<RollSlot> {
   List<FixedExtentScrollController> _controllers = [];
 
   int currentIndex = 0;
-
+  final List<int> results = [];
   @override
   void initState() {
     //shuffleAndFillTheList();
@@ -131,7 +131,7 @@ class _RollSlotState extends State<RollSlot> {
         currentIndex =
             (currentScrollPixels ~/ widget.itemExtend) % widget.children.length;
         final Widget currentWidget = widget.children.elementAt(currentIndex);
-        print('index : $currentIndex');
+        results.add(currentIndex);
         if (widget.onItemSelected != null) {
           widget.onItemSelected!(
             currentIndex: currentIndex,
@@ -144,11 +144,8 @@ class _RollSlotState extends State<RollSlot> {
 
   /// Gets the [randomIndex] an animate the [RollSlot] to that item
   Future<void> animateToRandomly() async {
-    // await _controllers[0].animateTo(
-    //   random * widget.itemExtend,
-    //   curve: Curves.elasticInOut,
-    //   duration: widget.duration * (1 / widget.speed),
-    // );
+    results.clear();
+
     late int random;
     List<Future> listOfFutures = [];
 
@@ -160,28 +157,12 @@ class _RollSlotState extends State<RollSlot> {
         curve: Curves.elasticInOut,
         duration: widget.duration * (1 / widget.speed),
       ));
-      // await _controllers[i].animateTo(
-      //   random * widget.itemExtend,
-      //   curve: Curves.elasticInOut,
-      //   duration: widget.duration * (1 / widget.speed),
-      // );
     }
-    var test = await Future.wait(listOfFutures);
-    print(test.toString());
+    await Future.wait(listOfFutures);
 
-    // _controllers.forEach((element) async {
-    //   random = randomIndex();
-
-    //   await element.animateTo(
-    //     random * widget.itemExtend,
-    //     curve: Curves.elasticInOut,
-    //     duration: widget.duration * (1 / widget.speed),
-    //   );
-    // });
-
-    if (widget.rollSlotController != null) {
-      widget.rollSlotController!.currentIndex = random % widget.children.length;
-    }
+    // if (widget.rollSlotController != null) {
+    //   widget.rollSlotController!.currentIndex = random % widget.children.length;
+    // }
   }
 
   /// Helping to jump the first item that can be random.
@@ -197,8 +178,8 @@ class _RollSlotState extends State<RollSlot> {
   int randomIndex() {
     int randomInt;
 
-    randomInt =
-        Random().nextInt(widget.children.length * widget.children.length);
+    randomInt = Random().nextInt(widget.children.length * 123);
+
     return randomInt == currentIndex ? randomIndex() : randomInt;
   }
 }

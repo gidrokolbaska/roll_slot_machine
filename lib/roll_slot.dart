@@ -52,8 +52,8 @@ class RollSlot extends StatefulWidget {
 class _RollSlotState extends State<RollSlot> {
   List<FixedExtentScrollController> _controllers = [];
 
-  int currentIndex = 0;
   final List<int> currentIndexes = [];
+  bool isAlreadyFetched = false;
 
   bool canRoll = true;
   @override
@@ -87,8 +87,9 @@ class _RollSlotState extends State<RollSlot> {
     return NotificationListener<ScrollEndNotification>(
       onNotification: (notification) {
         print('current values: $currentIndexes');
-        if (widget.onSelected != null) {
+        if (widget.onSelected != null && isAlreadyFetched == false) {
           widget.onSelected!(currentIndexes);
+          isAlreadyFetched = true;
           return true;
         } else {
           return false;
@@ -143,12 +144,12 @@ class _RollSlotState extends State<RollSlot> {
   Future<void> animateToRandomly() async {
     if (canRoll) {
       canRoll = false;
-
+      isAlreadyFetched = false;
       late int random;
       List<Future> listOfFutures = [];
 
       for (var i = 0; i < _controllers.length; i++) {
-        random = randomIndex();
+        random = randomIndex(i);
 
         listOfFutures.add(_controllers[i].animateTo(
           random * widget.itemExtend,
@@ -164,11 +165,11 @@ class _RollSlotState extends State<RollSlot> {
   }
 
   /// Returns a random number.
-  int randomIndex() {
+  int randomIndex(int i) {
     int randomInt;
 
     randomInt = Random().nextInt(widget.children.length * 123);
 
-    return randomInt == currentIndex ? randomIndex() : randomInt;
+    return randomInt == currentIndexes[i] ? randomIndex(i) : randomInt;
   }
 }

@@ -137,7 +137,7 @@ class _RollSlotState extends State<RollSlot> {
       canRoll = false;
       results.clear();
       results.length = 0;
-
+      print(results.toString());
       late int random;
       List<Future> listOfFutures = [];
 

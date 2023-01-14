@@ -3,10 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:roll_slot_machine/roll_slot_controller.dart';
 
-// typedef void SelectedItemCallback({
-//   List<int> results,
-// });
-
 class RollSlot extends StatefulWidget {
   late final RollSlotController? rollSlotController;
 
@@ -24,7 +20,6 @@ class RollSlot extends StatefulWidget {
 
   final double squeeze;
   final Function(List<int>)? onSelected;
-  // final SelectedItemCallback? onItemSelected;
 
   final bool shuffleList;
 
@@ -44,7 +39,6 @@ class RollSlot extends StatefulWidget {
     this.diameterRation = 1,
     this.perspective = 0.002,
     this.squeeze = 1.4,
-    // this.onItemSelected,
     this.shuffleList = true,
     this.onSelected,
     this.additionalListToEndAndStart = true,
@@ -62,7 +56,6 @@ class _RollSlotState extends State<RollSlot> {
   final List<int> results = [];
   @override
   void initState() {
-    //shuffleAndFillTheList();
     addRollSlotControllerListener();
     for (var i = 0; i < widget.numberOfRows; i++) {
       _controllers.add(FixedExtentScrollController());
@@ -130,15 +123,8 @@ class _RollSlotState extends State<RollSlot> {
       if (currentScrollPixels % widget.itemExtend == 0) {
         currentIndex =
             (currentScrollPixels ~/ widget.itemExtend) % widget.children.length;
-        // final Widget currentWidget = widget.children.elementAt(currentIndex);
-        results.add(currentIndex);
 
-        // if (widget.onItemSelected != null) {
-        //   widget.onItemSelected!(
-        //     currentIndex: currentIndex,
-        //     currentWidget: currentWidget,
-        //   );
-        // }
+        results.add(currentIndex);
       }
     });
   }
@@ -146,6 +132,7 @@ class _RollSlotState extends State<RollSlot> {
   /// Gets the [randomIndex] an animate the [RollSlot] to that item
   Future<void> animateToRandomly() async {
     results.clear();
+    results.length = _controllers.length;
 
     late int random;
     List<Future> listOfFutures = [];
@@ -163,19 +150,6 @@ class _RollSlotState extends State<RollSlot> {
     if (widget.onSelected != null) {
       widget.onSelected!(results);
     }
-    ;
-    // if (widget.rollSlotController != null) {
-    //   widget.rollSlotController!.currentIndex = random % widget.children.length;
-    // }
-  }
-
-  /// Helping to jump the first item that can be random.
-  ///
-  /// It is using only when the [additionalListToEndAndStart] is true.
-  void jump() {
-    _controllers.forEach((element) {
-      element.jumpTo(widget.itemExtend * widget.children.length);
-    });
   }
 
   /// Returns a random number.

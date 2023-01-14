@@ -82,7 +82,10 @@ class _RollSlotState extends State<RollSlot> {
             (scrollController) => Flexible(
               child: ListWheelScrollView.useDelegate(
                 onSelectedItemChanged: (value) {
-                  results.add(value);
+                  if (widget.rollSlotController!.state ==
+                      RollSlotControllerState.stopped) {
+                    results.add(value);
+                  }
                 },
                 physics: FixedExtentScrollPhysics(
                     parent: NeverScrollableScrollPhysics()),

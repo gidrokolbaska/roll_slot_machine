@@ -81,6 +81,9 @@ class _RollSlotState extends State<RollSlot> {
           .map(
             (scrollController) => Flexible(
               child: ListWheelScrollView.useDelegate(
+                onSelectedItemChanged: (value) {
+                  results.add(value);
+                },
                 physics: FixedExtentScrollPhysics(
                     parent: NeverScrollableScrollPhysics()),
                 itemExtent: widget.itemExtend,
@@ -124,8 +127,8 @@ class _RollSlotState extends State<RollSlot> {
         currentIndex =
             (currentScrollPixels ~/ widget.itemExtend) % widget.children.length;
 
-        results.add(currentIndex);
-        print(results.length);
+        // results.add(currentIndex);
+        // print(results.length);
       }
     });
   }
@@ -133,7 +136,7 @@ class _RollSlotState extends State<RollSlot> {
   /// Gets the [randomIndex] an animate the [RollSlot] to that item
   Future<void> animateToRandomly() async {
     results.clear();
-    results.length = 0;
+    // results.length = 0;
 
     late int random;
     List<Future> listOfFutures = [];

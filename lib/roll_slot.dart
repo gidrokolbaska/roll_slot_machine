@@ -11,6 +11,7 @@ class RollSlot extends StatefulWidget {
   final Duration duration;
   final Curve curve;
   final double speed;
+  final Curve animationCurve;
 
   final double diameterRation;
 
@@ -43,6 +44,7 @@ class RollSlot extends StatefulWidget {
     this.diameterRation = 1,
     this.perspective = 0.002,
     this.squeeze = 1.4,
+    this.animationCurve = Curves.elasticInOut,
     this.shuffleList = true,
     this.onSelected,
     this.additionalListToEndAndStart = true,
@@ -166,11 +168,13 @@ class _RollSlotState extends State<RollSlot> {
       for (var i = 0; i < _controllers.length; i++) {
         random = randomIndex(i);
 
-        listOfFutures.add(_controllers[i].animateTo(
-          random * widget.itemExtend,
-          curve: Curves.elasticInOut,
-          duration: widget.duration * (1 / widget.speed),
-        ));
+        listOfFutures.add(
+          _controllers[i].animateTo(
+            random * widget.itemExtend,
+            curve: widget.animationCurve,
+            duration: widget.duration * (1 / widget.speed),
+          ),
+        );
       }
       await Future.wait(listOfFutures);
 

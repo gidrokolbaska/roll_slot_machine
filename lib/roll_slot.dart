@@ -125,6 +125,7 @@ class _RollSlotState extends State<RollSlot> {
             (currentScrollPixels ~/ widget.itemExtend) % widget.children.length;
 
         results.add(currentIndex);
+        print(results.length);
       }
     });
   }

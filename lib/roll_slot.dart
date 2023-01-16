@@ -113,7 +113,7 @@ class _RollSlotState extends State<RollSlot> {
               (scrollController) => Flexible(
                 child: ListWheelScrollView.useDelegate(
                   onSelectedItemChanged: (value) {
-                    print(value);
+                    print(value % widget.children.length);
                     // currentIndexes[_controllers.indexOf(scrollController)] =
                     //     value;
                     // upperIndexes[_controllers.indexOf(scrollController)] =

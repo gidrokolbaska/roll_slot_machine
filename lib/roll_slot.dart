@@ -26,10 +26,6 @@ class RollSlot extends StatefulWidget {
       List<int>? currentResults,
       List<int>? belowResults})? onSelected;
 
-  final bool shuffleList;
-
-  final bool additionalListToEndAndStart;
-
   final EdgeInsets itemPadding;
 
   RollSlot({
@@ -45,9 +41,7 @@ class RollSlot extends StatefulWidget {
     this.perspective = 0.002,
     this.squeeze = 1.4,
     this.animationCurve = Curves.elasticInOut,
-    this.shuffleList = true,
     this.onSelected,
-    this.additionalListToEndAndStart = true,
     this.itemPadding = const EdgeInsets.all(8.0),
   }) : super(key: key);
 
@@ -67,6 +61,7 @@ class _RollSlotState extends State<RollSlot> {
   @override
   void initState() {
     addRollSlotControllerListener();
+    widget.children.shuffle();
     for (var i = 0; i < widget.numberOfRows; i++) {
       _controllers.add(
         FixedExtentScrollController(

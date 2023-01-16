@@ -60,7 +60,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: RollSlot(
                     duration: Duration(milliseconds: 10000),
                     itemExtend: 300,
-                    shuffleList: false,
                     rollSlotController: _rollSlotController,
                     children: values
                         .map(

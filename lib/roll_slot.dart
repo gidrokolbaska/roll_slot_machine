@@ -71,15 +71,14 @@ class _RollSlotState extends State<RollSlot> {
             // ),
             ),
       );
+      widget.children.shuffle();
       _items.add(widget.children);
-
-      _items[i].shuffle();
 
       currentIndexes.add(0);
       upperIndexes.add(0);
       belowIndexes.add(0);
     }
-    print(_items[0].toString());
+
     super.initState();
   }
 

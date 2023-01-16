@@ -79,7 +79,7 @@ class _RollSlotState extends State<RollSlot> {
       upperIndexes.add(0);
       belowIndexes.add(0);
     }
-    print(_items);
+    print(_items[0].toString());
     super.initState();
   }
 

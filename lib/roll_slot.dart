@@ -122,13 +122,13 @@ class _RollSlotState extends State<RollSlot> {
                     //     ((value - 1) % widget.children.length);
                     upperIndexes[_controllers.indexOf(scrollController)] =
                         _items[_controllers.indexOf(scrollController)]
-                                [(value - 1 % widget.children.length)]
+                                [(value - 1) % widget.children.length]
                             .index;
                     // belowIndexes[_controllers.indexOf(scrollController)] =
                     //     ((value + 1) % widget.children.length);
                     belowIndexes[_controllers.indexOf(scrollController)] =
                         _items[_controllers.indexOf(scrollController)]
-                                [(value + 1 % widget.children.length)]
+                                [(value + 1) % widget.children.length]
                             .index;
                   },
                   physics: FixedExtentScrollPhysics(

@@ -51,7 +51,7 @@ class RollSlot extends StatefulWidget {
 
 class _RollSlotState extends State<RollSlot> {
   List<FixedExtentScrollController> _controllers = [];
-
+  List<List<Widget>> _items = [];
   final List<int> currentIndexes = [];
   final List<int> belowIndexes = [];
   final List<int> upperIndexes = [];
@@ -61,7 +61,7 @@ class _RollSlotState extends State<RollSlot> {
   @override
   void initState() {
     addRollSlotControllerListener();
-    widget.children.shuffle();
+
     for (var i = 0; i < widget.numberOfRows; i++) {
       _controllers.add(
         FixedExtentScrollController(
@@ -70,6 +70,8 @@ class _RollSlotState extends State<RollSlot> {
             // ),
             ),
       );
+      _items[i].addAll(widget.children);
+      _items[i].shuffle();
       currentIndexes.add(0);
       upperIndexes.add(0);
       belowIndexes.add(0);
@@ -124,7 +126,8 @@ class _RollSlotState extends State<RollSlot> {
                   squeeze: widget.squeeze,
                   perspective: widget.perspective,
                   childDelegate: ListWheelChildLoopingListDelegate(
-                    children: widget.children.map(
+                    children:
+                        _items[_controllers.indexOf(scrollController)].map(
                       (_widget) {
                         return Padding(
                           padding: widget.itemPadding,

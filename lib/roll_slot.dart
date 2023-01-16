@@ -61,7 +61,7 @@ class _RollSlotState extends State<RollSlot> {
   @override
   void initState() {
     addRollSlotControllerListener();
-
+    _items.length = widget.numberOfRows;
     for (var i = 0; i < widget.numberOfRows; i++) {
       _controllers.add(
         FixedExtentScrollController(

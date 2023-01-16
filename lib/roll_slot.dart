@@ -63,7 +63,7 @@ class _RollSlotState extends State<RollSlot> {
     addRollSlotControllerListener();
 
     for (var i = 0; i < widget.numberOfRows; i++) {
-      _items.add([]);
+      // _items.add([]);
       _controllers.add(
         FixedExtentScrollController(
             // initialItem: Random().nextInt(
@@ -71,7 +71,7 @@ class _RollSlotState extends State<RollSlot> {
             // ),
             ),
       );
-      _items[i].addAll(widget.children);
+      _items.add(widget.children);
       _items[i].shuffle();
       currentIndexes.add(0);
       upperIndexes.add(0);
@@ -190,7 +190,7 @@ class _RollSlotState extends State<RollSlot> {
   int randomIndex(int i) {
     int randomInt;
 
-    randomInt = Random().nextInt(widget.children.length * 123);
+    randomInt = Random().nextInt(_items[i].length * 123);
 
     return randomInt == currentIndexes[i] ? randomIndex(i) : randomInt;
   }

@@ -202,7 +202,7 @@ class _RollSlotState extends State<RollSlot> {
   int randomIndex(int i) {
     int randomInt;
 
-    randomInt = Random().nextInt(_items[i].length);
+    randomInt = Random().nextInt(_items[i].length * 123);
 
     return randomInt == currentIndexes[i] ? randomIndex(i) : randomInt;
   }

@@ -65,10 +65,10 @@ class _RollSlotState extends State<RollSlot> {
     for (var i = 0; i < widget.numberOfRows; i++) {
       _controllers.add(
         FixedExtentScrollController(
-          initialItem: Random().nextInt(
-            widget.children.length,
-          ),
-        ),
+            // initialItem: Random().nextInt(
+            //   widget.children.length,
+            // ),
+            ),
       );
       currentIndexes.add(0);
       upperIndexes.add(0);

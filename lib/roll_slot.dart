@@ -51,7 +51,7 @@ class RollSlot extends StatefulWidget {
 
 class _RollSlotState extends State<RollSlot> {
   List<FixedExtentScrollController> _controllers = [];
-  List<List<Widget>> _items = [];
+  List<List<dynamic>> _items = [];
   final List<int> currentIndexes = [];
   final List<int> belowIndexes = [];
   final List<int> upperIndexes = [];
@@ -113,8 +113,8 @@ class _RollSlotState extends State<RollSlot> {
               (scrollController) => Flexible(
                 child: ListWheelScrollView.useDelegate(
                   onSelectedItemChanged: (value) {
-                    print(
-                        _items[_controllers.indexOf(scrollController)][value]);
+                    print(_items[_controllers.indexOf(scrollController)][value]
+                        .index);
                     // currentIndexes[_controllers.indexOf(scrollController)] =
                     //     value;
                     // upperIndexes[_controllers.indexOf(scrollController)] =

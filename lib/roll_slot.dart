@@ -166,9 +166,9 @@ class _RollSlotState extends State<RollSlot> {
       List<Future> listOfFutures = [];
 
       for (var i = 0; i < _controllers.length; i++) {
-        setState(() {
-          _items[i].shuffle();
-        });
+        // setState(() {
+        //   _items[i].shuffle();
+        // });
 
         random = randomIndex(i);
 
